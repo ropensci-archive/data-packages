@@ -69,7 +69,7 @@ find_field_class <- function(k) {
 }
 
 read_dcf <- function(file) {
-  lines <- readLines(file)
+  lines <- read_lines(file)
   no_tws_fields <- sub(
     ":$",
     "",
@@ -122,11 +122,3 @@ dsc_to_df <- function(dsc){
     do.call(cbind, .)
   
 }
-
-### package names to a data_frame
-package_names <- c("ggplot2", "sp")
-
-package_names %>% 
-  map(~package_name_to_dsc(.)) %>% 
-  map(~read_dcf(.)) %>% 
-  map_df(~dsc_to_df(.))
