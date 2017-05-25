@@ -1,6 +1,7 @@
 library(rtweet)
 
-token <- get_tokens()
+# token <- get_tokens()
+token <- twitter_token
 
 # replace this with our generated list 
 dt <- read.csv("https://raw.githubusercontent.com/vincentarelbundock/Rdatasets/master/datasets.csv")
@@ -10,4 +11,4 @@ cran_link <- paste0("https://cran.r-project.org/package=",
                     dt[i, "Package"])
 toot <- paste0("#RData: ", dt[i, "Title"], " - ", cran_link)
 
-post_tweet(toot)
+post_tweet(toot, token = token)

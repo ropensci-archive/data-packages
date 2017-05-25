@@ -104,20 +104,29 @@ read_dcf <- function(file) {
 library(desc)
 library(tidyverse)
 
+### package name to a description file
+package_name_to_dsc <- function(package_name){
+  sprintf("https://raw.githubusercontent.com/cran/%s/master/DESCRIPTION", package_name)
+}
+
+### description file to a data_frame object
 dsc_to_df <- function(dsc){
   dsc <- dsc[[1]]
   key_to_df <- function(dsc_element){
-    # dsc_element <- dsc[[1]]
     df <- data_frame(dsc_element$value) %>% 
       set_names(dsc_element$key)
     df
   }
   dsc %>%
     map(~key_to_df(.)) %>% 
-    do.call(cbind, .) %>% View
+    do.call(cbind, .)
   
 }
 
-dsc <-  "https://raw.githubusercontent.com/cran/ggplot2/master/DESCRIPTION" %>% 
-  read_dcf(.) %>% 
-  dsc_to_df(.)
+### package names to a data_frame
+package_names <- c("ggplot2", "sp")
+
+package_names %>% 
+  map(~package_name_to_dsc(.)) %>% 
+  map(~read_dcf(.)) %>% 
+  map_df(~dsc_to_df(.))
