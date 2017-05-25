@@ -1,7 +1,7 @@
 library(gh)
 library(dplyr)
 library(purrr)
-res <- gh("GET /search/code", q = "user:cran extension:Rd docType{data")
+library(stringi)
 
 get_tag <- function(rd, tag) {
   x <- tools:::.Rd_get_metadata(rd, kind = tag)
@@ -10,7 +10,29 @@ get_tag <- function(rd, tag) {
   x
 }
 
-rd_file_meta <- map_df(res[[3]], function(x) {
+pkgs <- readRDS("pkg_data_data.rds")
+pkgs_with_data <- pkgs$pkg_name[pkgs$has_data_dir]
+
+pkgs_data_rds <- lapply(pkgs_with_data[1:20], function(pkg_name) {
+  message(pkg_name)
+  Sys.sleep(0.7)
+  query <- sprintf( "repo:cran/%s extension:Rd docType{data", pkg_name)
+  res <- tryCatch(gh("GET /search/code", q = query), 
+                  error = function(e) {
+                    if(any(stri_detect_fixed(e, "403 Forbidden"))) {
+                      # Should really check rate limit API and restart then
+                      # But easiest to just stop and manually restart later
+                      stop("Rate limit exceeded.")
+                    }
+                    NULL
+                  })
+  res[[3]]
+})
+
+# res <- gh("GET /search/code", q = "user:cran extension:Rd docType{data")
+
+
+rd_file_meta <- map_df(pkgs_data_rds, function(x) {
   reponame <- x$repository$name
   repo_url <- paste0("https://github.com/cran/", reponame)
   dataset_rd <- gsub("\\.Rd$", "", x$name)
