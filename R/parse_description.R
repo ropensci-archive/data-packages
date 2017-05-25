@@ -107,14 +107,13 @@ library(tidyverse)
 dsc_to_df <- function(dsc){
   dsc <- dsc[[1]]
   key_to_df <- function(dsc_element){
-    # dsc_element <- dsc[[1]]
     df <- data_frame(dsc_element$value) %>% 
       set_names(dsc_element$key)
     df
   }
   dsc %>%
     map(~key_to_df(.)) %>% 
-    do.call(cbind, .) %>% View
+    do.call(cbind, .)
   
 }
 
