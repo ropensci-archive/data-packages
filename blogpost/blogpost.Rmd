@@ -1,0 +1,43 @@
+---
+title: "The State of Data on CRAN"
+subtitle: "Discovering Good Data Packages"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Motivation
+
+`R` packages that serve datasets come in several flavors. This post explores several aspects of these packages and their included datasets in order to:
+
+ * Survey existing `R` datasets
+ 
+ * Summarize best practices
+
+Our primary objective is to increase dataset discoverability especially to increase the diversity of datasets used in `R` tutorials.
+
+## Stats
+
+### Package Stats
+
+ * The number of packages on CRAN that include data
+
+ * Does the `DESCRIPTION` contain `LazyData: true`?
+ 
+ * How many authors are on packages that include data?
+
+### Dataset Stats
+
+ * How big is each dataset?
+
+ * What topic are the datasets related to?
+ 
+ * How are datasets licensed?
+
+## Discussion
+
+We did not look at datasets provided as raw files or on Bioconductor.
+
+## Recommendations
