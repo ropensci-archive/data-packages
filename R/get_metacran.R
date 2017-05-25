@@ -1,17 +1,27 @@
 library(gh)
+library(dplyr)
 res <- gh("GET /search/code", q = "user:cran extension:Rd docType{data")
 
-lapply(res[[3]], function(x) {
+get_tag <- function(rd, tag) {
+  x <- tools:::.Rd_get_metadata(rd, kind = tag)
+  if (!length(x)) return("")
+  x <- x[nchar(x) > 0]
+  x
+}
+
+rd_file_meta <- lapply(res[[3]], function(x) {
   reponame <- x$repository$name
   repo_url <- paste0("https://github.com/cran/", reponame)
   dataset_rd <- gsub("\\.Rd$", "", x$name)
-  dataset_rd_url <- gsub("github\\.com", "raw.githubusercontent.com", 
-                         x$html_url)
+  dataset_rd_url <- gsub("github\\.com", "raw.githubusercontent.com", x$html_url)
   dataset_rd_url <- gsub("/blob/", "/", dataset_rd_url)
+  rd_text <-  tools::parse_Rd(dataset_rd_url)
   
-  list(reponame = reponame, 
+  data_frame(pkg_name = reponame, 
        repo_url = repo_url, 
        dataset_rd = dataset_rd, 
-       dataset_rd_url = dataset_rd_url)
-}
-)
+       dataset_rd_url = dataset_rd_url, 
+       data_rd_name = get_tag(rd_text, "name"), 
+       data_rd_usage = get_tag(rd_text, "usage"))
+}) %>% 
+ bind_rows() 
