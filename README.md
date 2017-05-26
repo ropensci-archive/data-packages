@@ -4,11 +4,11 @@ Discovering good data packages
 
 ### Project participants:
 
--   Andy Teucher (@ateucher)
--   Richie Cotton (@richierocks)
--   Claudia Vitolo (@cvitolo)
--   Jakub Nowosad (@Nowosad)
--   Joe Stachelek (@jsta)
+-   Andy Teucher (\[@ateucher\](<https://github.com/ateucher>))
+-   Richie Cotton (\[@richierocks\](<https://github.com/richierocks>))
+-   Claudia Vitolo (\[@cvitolo\](<https://github.com/cvitolo>))
+-   Jakub Nowosad (\[@Nowosad\](<https://github.com/Nowosad>))
+-   Joe Stachelek (\[@jsta\](<https://github.com/jsta>))
 
 Most of us are involved in teaching R in some way, and it is always a struggle to find suitable datasets with which to teach, especially across domain expertise. There are many packages that have data, but finding them and knowing what is in them is a struggle due to inadequate documentation.
 
