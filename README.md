@@ -4,7 +4,11 @@ Discovering good data packages
 
 ### Project participants:
 
-Andy Teucher (@ateucher) Richie Cotton (@richierocks) Claudia Vitolo (@cvitolo) Jakub Nowosad (@Nowosad) Joe Stachelek (@jsta)
+-   Andy Teucher (@ateucher)
+-   Richie Cotton (@richierocks)
+-   Claudia Vitolo (@cvitolo)
+-   Jakub Nowosad (@Nowosad)
+-   Joe Stachelek (@jsta)
 
 Most of us are involved in teaching R in some way, and it is always a struggle to find suitable datasets with which to teach, especially across domain expertise. There are many packages that have data, but finding them and knowing what is in them is a struggle due to inadequate documentation.
 
@@ -19,7 +23,9 @@ Deliverables:
 
 1.  Google Doc which describes best practices for documentation.
 
-Checklist of things to document Make sure your documentation answers as many of these questions as possible.
+Checklist of things to document.
+
+Make sure your documentation answers as many of these questions as possible.
 
 -   What does the data represent?
 -   What format is the data in?
