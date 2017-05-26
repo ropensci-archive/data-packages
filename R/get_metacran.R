@@ -48,6 +48,7 @@ saveRDS(pkgs_data_rds, saved_gh_data_rd_files)
 rd_file_meta <- lapply(pkgs_data_rds, function(a) {
   if (!length(a$items)) return(NULL)
   lapply(a$items, function(x) {
+  tryCatch({
     reponame <- x$repository$name
     repo_url <- paste0("https://github.com/cran/", reponame)
     dataset_rd <- gsub("\\.Rd$", "", x$name)
@@ -55,16 +56,21 @@ rd_file_meta <- lapply(pkgs_data_rds, function(a) {
     dataset_rd_url <- gsub("/blob/", "/", dataset_rd_url)
     rd_text <- readr::read_lines(dataset_rd_url)
     tc <- textConnection(rd_text)
-    list(name = reponame, 
+    ret <- list(name = reponame, 
          repo_url = repo_url, 
          dataset_rd_url = dataset_rd_url, 
          rd_text = rd_text,
          rd_text_parsed = tools::parse_Rd(tc)
     )
     close(tc)
+    ret
+  }, error = function(e) NULL)
   })
 }) %>% 
-  flatten()
+  flatten() %>% 
+  compact()
+
+saveRDS(rd_file_meta, "data/rd_file_contents.rds")
 
 ## Combine parsed Rd file info into a data frame
 rd_metadata <- map_df(rd_file_meta, function(x) {
