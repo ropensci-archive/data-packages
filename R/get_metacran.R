@@ -14,7 +14,15 @@ get_tag <- function(rd, tag) {
 pkgs <- readRDS("data/pkg_data_data.rds")
 pkgs_with_data <- pkgs$pkg_name[pkgs$has_data_dir]
 
-pkgs_data_rds <- lapply(pkgs_with_data[1:100], function(pkg_name) {
+saved_gh_data_rd_files <- "data/data_rd_gh_search_results.rds"
+if (file.exists(saved_gh_data_rd_files)) {
+  pkgs_data_rds_saved <- readRDS("data/data_rd_gh_search_results.rds")
+  start = length(pkgs_data_rds_saved) + 1
+} else {
+  start = 1
+}
+
+pkgs_data_rds <- lapply(pkgs_with_data[start:length(pkgs_with_data)], function(pkg_name) {
   message(pkg_name)
   Sys.sleep(2)
   query <- sprintf( "repo:cran/%s extension:Rd docType{data", pkg_name)
@@ -30,9 +38,14 @@ pkgs_data_rds <- lapply(pkgs_with_data[1:100], function(pkg_name) {
   res
 })
 
-saveRDS(pkgs_data_rds, "data_rd_gh_search_results.rds")
+if (exists("pkgs_data_rds_saved")) {
+  pkgs_data_rds <- c(pkgs_data_rds_saved, pkgs_data_rds)
+}
+saveRDS(pkgs_data_rds, saved_gh_data_rd_files)
 
-rd_file_meta <- lapply(pkgs_data_rds, function(x) {
+
+## Download and parse the Rd files
+rd_file_meta <- lapply(pkgs_data_rds_saved, function(x) {
   if (!length(x$items)) return(NULL)
   x <- x$items[[1]]
   reponame <- x$repository$name
@@ -49,13 +62,18 @@ rd_file_meta <- lapply(pkgs_data_rds, function(x) {
   )
 })
 
+## Combine parsed Rd file info into a data frame
 rd_metadata <- map_df(rd_file_meta, function(x) {
   if (is.null(x)) return(NULL)
   data_frame(pkg_name = x$name, 
              dataset_name = get_tag(x$rd_text_parsed, "name"), 
              dataset_alias = get_tag(x$rd_text_parsed, "alias"),
              dataset_title = paste(get_tag(x$rd_text_parsed, "title"), collapse = " "), 
-             dataset_description = paste(get_tag(x$rd_text_parsed, "description"), collapse = " ")
+             dataset_description = paste(get_tag(x$rd_text_parsed, "description"), collapse = " "), 
+             dateset_format = paste(get_tag(x$rd_text_parsed, "format"), collapse = " "),
+             dateset_source = paste(get_tag(x$rd_text_parsed, "source"), collapse = " "),
+             dateset_reference = paste(get_tag(x$rd_text_parsed, "references"), collapse = " "),
+             datset_has_examples = ifelse(all(is.na(get_tag(x$rd_text_parsed, "examples"))), FALSE, TRUE)
   )
 })
 
