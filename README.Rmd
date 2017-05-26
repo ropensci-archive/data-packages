@@ -28,7 +28,7 @@ https://twitter.com/rstatsdata
 
 ## Graphs
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.width=8}
 library(forcats)
 library(tidyverse)
 theme_set(theme_bw())
@@ -52,10 +52,10 @@ ggplot(data_cran, aes(URL_is_not_na)) +
 ```
 
 ```{r, echo=FALSE, fig.height=8}
-ggplot(data_cran, aes(License)) +
-  geom_bar() +
-  coord_flip() +
-  facet_wrap(~is_data_package)
+# ggplot(data_cran, aes(License)) +
+#   geom_bar() +
+#   coord_flip() +
+#   facet_wrap(~is_data_package)
 ```
 
 ```{r, echo=FALSE, fig.height=14}
