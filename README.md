@@ -26,24 +26,11 @@ Twitter Bot
 Graphs
 ------
 
-![](README_files/figure-markdown_github/unnamed-chunk-1-1.png)![](README_files/figure-markdown_github/unnamed-chunk-1-2.png)![](README_files/figure-markdown_github/unnamed-chunk-1-3.png)
+![](README_files/figure-markdown_github/unnamed-chunk-1-1.png)![](README_files/figure-markdown_github/unnamed-chunk-1-2.png)![](README_files/figure-markdown_github/unnamed-chunk-1-3.png)![](README_files/figure-markdown_github/unnamed-chunk-1-4.png)
 
 ![](README_files/figure-markdown_github/unnamed-chunk-3-1.png)
 
-``` r
-df_ts <- data_cran %>% 
-  mutate(year = as.integer(strftime(data_cran$Published, format = "%Y"))) %>% 
-  group_by(year, is_data_package) %>% 
-  summarise(number = n())
-
-ggplot(df_ts, aes(y = number, 
-                      x = year, 
-                      colour = is_data_package)) +
-  geom_point() + 
-  scale_y_log10()
-```
-
-![](README_files/figure-markdown_github/unnamed-chunk-4-1.png)
+<img src="README_files/figure-markdown_github/unnamed-chunk-4-1.png" style="display: block; margin: auto;" />
 
 Flashboard
 ----------
