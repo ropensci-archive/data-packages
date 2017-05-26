@@ -74,9 +74,8 @@ df_wide <- df %>%
 ggplot(df_wide, aes(fct_reorder(License, diff), diff)) +
   geom_col() + 
   coord_flip() +
-  labs(x="License", y="<--- Non-data packages --------- Data packages --->")
- 
-
+  labs(x="License", y="<--- Non-data packages --------- Data packages --->") +
+  theme(axis.text.y = element_text(size=8))
 ```
 
 
