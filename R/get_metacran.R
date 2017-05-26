@@ -45,7 +45,7 @@ saveRDS(pkgs_data_rds, saved_gh_data_rd_files)
 
 
 ## Download and parse the Rd files
-rd_file_meta <- lapply(pkgs_data_rds_saved, function(a) {
+rd_file_meta <- lapply(pkgs_data_rds, function(a) {
   if (!length(a$items)) return(NULL)
   lapply(a$items, function(x) {
     reponame <- x$repository$name
@@ -54,12 +54,14 @@ rd_file_meta <- lapply(pkgs_data_rds_saved, function(a) {
     dataset_rd_url <- gsub("github\\.com", "raw.githubusercontent.com", x$html_url)
     dataset_rd_url <- gsub("/blob/", "/", dataset_rd_url)
     rd_text <- readr::read_lines(dataset_rd_url)
+    tc <- textConnection(rd_text)
     list(name = reponame, 
          repo_url = repo_url, 
          dataset_rd_url = dataset_rd_url, 
          rd_text = rd_text,
-         rd_text_parsed = tools::parse_Rd(textConnection(rd_text))
+         rd_text_parsed = tools::parse_Rd(tc)
     )
+    close(tc)
   })
 }) %>% 
   flatten()
