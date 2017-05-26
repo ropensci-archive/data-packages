@@ -37,31 +37,42 @@ for (pack in packs) {
 }
 saveRDS(df, "data/datasets_info.rds")
 
-# Test using already installed packages (Richie's laptop)
-dfR <- readRDS("data/metadata-for-many-pkgs.rds")
-names(dfR)[1] <- names(pkgs)[1]
-
-names(dfR) <- c()
-names(df)
-
 # Add data from gh (Andy)
 gh <- read.csv("data/data_rd_metadata.csv")
 names(gh)[1] <- names(pkgs)[1]
 
+# Test using already installed packages (Richie's laptop)
+dfR <- readRDS("data/metadata-for-many-pkgs.rds")
+dfC <- readRDS("data/metadata-for-many-pkgs2.rds")
+df <- rbind(dfR, dfC); rm(dfC, dfR)
+df <- df[!duplicated(df), ]
+df <- df[which(df$pkg_name %in% pkgs$Package),]
+names(df)[1] <- names(pkgs)[1]
+names(df)[2] <- names(gh)[2]
+names(df)[10] <- names(gh)[3]
+
 # Join the dataset info with the package info
 temp1 <- dplyr::left_join(df, pkgs, "Package")
 temp2 <- dplyr::left_join(gh, pkgs, "Package")
-dfX <- dplyr::full_join(temp1, temp2, names(pkgs))
-
-# Which columns do not contain NAs?
-cols <- names(dfX)[which(!apply(dfX, 2, function(x) any(is.na(x))))] # only dataset info an pkg name!
+dfX <- dplyr::full_join(temp1, temp2, c(names(pkgs), names(df)[c(2, 10)]))
+dfX <- dfX[!duplicated(dfX[, c("Package", "dataset_name")]), ]
+rm(df, gh, pkgs, temp1, temp2)
 
 # Select only the info you want to visualise
-dfX2 <- dfX[,cols]
-# as.data.frame(names(dfX2))
-# dfX2 <- dfX2[, c(1, 13, 6, 7, 11, 14, 2, 5, 3, 4)]
-# names(dfX2)[c(2, 8, 7)] <- c("PackageTitle", "DatasetTitle", "DatasetName")
-# as.data.frame(names(dfX2))
-# saveRDS(dfX2, "data/pkgs_datasets_info_small.rds")
-dfX2 <- dfX2[, c(1, 14, 7, 8, 12, 15, 3, 4, 5, 6)]
-saveRDS(dfX2, "data/pkgs_datasets_info_small2.rds")
+dfX <- dfX[, c("Package", "License", "Description", "URL", "dataset_name", 
+               "dataset_title", "dataset_description", "type", "classes", 
+               "length", "n_elts", "nrow", "ncol", "dims", "dataset_format", 
+               "dataset_source", "dataset_has_examples", "dataset_has_links")]
+saveRDS(dfX, "data/pkgs_datasets_final.rds")
+
+dfX2 <- dfX[, c("Package", "License", "Description", "URL")]
+saveRDS(dfX2, "data/pkgs_datasets_final2.rds")
+
+dfX3 <- dfX[, c("dataset_name", 
+               "dataset_title", "dataset_description", "type", "classes", 
+               "length", "n_elts", "nrow", "ncol", "dims")]
+saveRDS(dfX3, "data/pkgs_datasets_final3.rds")
+
+dfX4 <- dfX[, c("dataset_format", 
+               "dataset_source", "dataset_has_examples", "dataset_has_links")]
+saveRDS(dfX4, "data/pkgs_datasets_final4.rds")
