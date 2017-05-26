@@ -2,6 +2,7 @@ library(gh)
 library(dplyr)
 library(purrr)
 library(stringi)
+library(readr)
 
 get_tag <- function(rd, tag) {
   x <- tools:::.Rd_get_metadata(rd, kind = tag)
@@ -29,8 +30,7 @@ pkgs_data_rds <- lapply(pkgs_with_data[1:100], function(pkg_name) {
   res
 })
 
-# res <- gh("GET /search/code", q = "user:cran extension:Rd docType{data")
-
+saveRDS(pkgs_data_rds, "data_rd_gh_search_results.rds")
 
 rd_file_meta <- lapply(pkgs_data_rds, function(x) {
   if (!length(x$items)) return(NULL)
@@ -58,3 +58,5 @@ rd_metadata <- map_df(rd_file_meta, function(x) {
              dataset_description = paste(get_tag(x$rd_text_parsed, "description"), collapse = " ")
   )
 })
+
+write_csv(rd_metadata, "data/data_rd_metadata.csv")
