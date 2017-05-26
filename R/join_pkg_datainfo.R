@@ -23,19 +23,19 @@ packs <- pkgs$Package
 # new_packages <- packs[!(packs %in% installed.packages()[,"Package"])]
 # if(length(new_packages)) install.packages(new_packages)
 
-# Test using already installed packages (Claudia's laptop)
-packs <- packs[packs %in% installed.packages()[,"Package"]]
-df <- data.frame(matrix(NA, nrow = 0, ncol = 5))
-names(df) <- c("Package", "Item", "class", "dim", "Title")
-for (pack in packs) {
-  x <- try(vcdExtra::datasets(package = pack, incPackage = T), silent = T)
-  if (class(x) == "data.frame") {
-    print(pack)
-    df <- rbind(df, x)
-  }
-  try(unloadNamespace(pack), silent = TRUE)
-}
-saveRDS(df, "data/datasets_info.rds")
+# # Test using already installed packages (Claudia's laptop)
+# packs <- packs[packs %in% installed.packages()[,"Package"]]
+# df <- data.frame(matrix(NA, nrow = 0, ncol = 5))
+# names(df) <- c("Package", "Item", "class", "dim", "Title")
+# for (pack in packs) {
+#   x <- try(vcdExtra::datasets(package = pack, incPackage = T), silent = T)
+#   if (class(x) == "data.frame") {
+#     print(pack)
+#     df <- rbind(df, x)
+#   }
+#   try(unloadNamespace(pack), silent = TRUE)
+# }
+# saveRDS(df, "data/datasets_info.rds")
 
 # Add data from gh (Andy)
 gh <- read.csv("data/data_rd_metadata.csv")
