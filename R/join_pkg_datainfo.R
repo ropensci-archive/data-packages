@@ -20,11 +20,11 @@ rm(x, cran)
 
 # DOWNLOAD ALL THE RELEVANT PACKAGES FROM CRAN
 packs <- pkgs$Package
-new_packages <- packs[!(packs %in% installed.packages()[,"Package"])]
-if(length(new_packages)) install.packages(new_packages)
+# new_packages <- packs[!(packs %in% installed.packages()[,"Package"])]
+# if(length(new_packages)) install.packages(new_packages)
 
-# Test using already installed packages
-# packs <- packs[packs %in% installed.packages()[,"Package"]]
+# Test using already installed packages (Claudia's laptop)
+packs <- packs[packs %in% installed.packages()[,"Package"]]
 df <- data.frame(matrix(NA, nrow = 0, ncol = 5))
 names(df) <- c("Package", "Item", "class", "dim", "Title")
 for (pack in packs) {
@@ -33,17 +33,25 @@ for (pack in packs) {
     print(pack)
     df <- rbind(df, x)
   }
+  try(unloadNamespace(pack), silent = TRUE)
 }
 saveRDS(df, "data/datasets_info.rds")
 
-# Alternatively get the data from gh
-df <- read.csv("data/data_rd_metadata.csv")
-names(df)[1] <- names(pkgs)[1]
+# Test using already installed packages (Richie's laptop)
+dfR <- readRDS("data/metadata-for-many-pkgs.rds")
+names(dfR)[1] <- names(pkgs)[1]
+
+names(dfR) <- c()
+names(df)
+
+# Add data from gh (Andy)
+gh <- read.csv("data/data_rd_metadata.csv")
+names(gh)[1] <- names(pkgs)[1]
 
 # Join the dataset info with the package info
-dfX <- dplyr::left_join(df, pkgs, "Package")
-# saveRDS(dfX, "data/pkgs_datasets_info.rds")
-saveRDS(dfX, "data/pkgs_datasets_info2.rds")
+temp1 <- dplyr::left_join(df, pkgs, "Package")
+temp2 <- dplyr::left_join(gh, pkgs, "Package")
+dfX <- dplyr::full_join(temp1, temp2, names(pkgs))
 
 # Which columns do not contain NAs?
 cols <- names(dfX)[which(!apply(dfX, 2, function(x) any(is.na(x))))] # only dataset info an pkg name!
