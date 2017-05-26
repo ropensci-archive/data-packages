@@ -33,7 +33,7 @@ Graphs
 Flashboard
 ----------
 
-<iframe width="420" height="315" src="https://ropenscilabs.github.io/data-packages/" frameborder="0">
+<iframe src="https://ropenscilabs.github.io/data-packages">
 </iframe>
 Potential Future Work
 ---------------------
