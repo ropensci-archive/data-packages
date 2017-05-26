@@ -45,7 +45,7 @@ saveRDS(pkgs_data_rds, saved_gh_data_rd_files)
 
 
 ## Download and parse the Rd files
-rd_file_meta <- lapply(pkgs_data_rds, function(a) {
+rd_file_meta <- lapply(pkgs_data_rds[1:1000], function(a) {
   if (!length(a$items)) return(NULL)
   lapply(a$items, function(x) {
   tryCatch({
