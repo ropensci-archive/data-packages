@@ -1,0 +1,28 @@
+---
+title: "Datasets by package"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    social: menu
+    source_code: embed
+runtime: shiny
+---
+
+```{r global, include=FALSE}
+# load data in 'global' chunk so it can be shared by all users of the dashboard
+library(flexdashboard)
+library(DT)
+df <- readRDS("../data/pkgs_datasets_info_small2.rds")
+
+dfP <- data.frame(table(df$Package))
+names(dfP) <- c("Package", "NumberOfDatasets")
+```
+
+Row
+-----------------------------------------------------------------------
+
+### Select an R packages
+
+```{r}
+DT::datatable(df)
+```
