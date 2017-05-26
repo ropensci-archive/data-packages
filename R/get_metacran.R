@@ -13,9 +13,9 @@ get_tag <- function(rd, tag) {
 pkgs <- readRDS("pkg_data_data.rds")
 pkgs_with_data <- pkgs$pkg_name[pkgs$has_data_dir]
 
-pkgs_data_rds <- lapply(pkgs_with_data[1:20], function(pkg_name) {
+pkgs_data_rds <- lapply(pkgs_with_data[1:100], function(pkg_name) {
   message(pkg_name)
-  Sys.sleep(0.7)
+  Sys.sleep(2)
   query <- sprintf( "repo:cran/%s extension:Rd docType{data", pkg_name)
   res <- tryCatch(gh("GET /search/code", q = query), 
                   error = function(e) {
@@ -26,13 +26,15 @@ pkgs_data_rds <- lapply(pkgs_with_data[1:20], function(pkg_name) {
                     }
                     NULL
                   })
-  res[[3]]
+  res
 })
 
 # res <- gh("GET /search/code", q = "user:cran extension:Rd docType{data")
 
 
 rd_file_meta <- map_df(pkgs_data_rds, function(x) {
+  if (!length(x$items)) return(NULL)
+  x <- x$items[[1]]
   reponame <- x$repository$name
   repo_url <- paste0("https://github.com/cran/", reponame)
   dataset_rd <- gsub("\\.Rd$", "", x$name)
@@ -44,9 +46,9 @@ rd_file_meta <- map_df(pkgs_data_rds, function(x) {
        repo_url = repo_url, 
        dataset_rd_url = dataset_rd_url, 
        data_rd_name = get_tag(rd_text, "name"), 
-       data_rd_alias = get_tag(rd_text, "alias"),
-       data_rd_title = get_tag(rd_text, "title"), 
-       data_rd_usage = get_tag(rd_text, "usage"), 
-       data_rd_description = get_tag(rd_text, "description")
+       data_rd_alias = paste(get_tag(rd_text, "alias"), collapse = "; "),
+       data_rd_title = paste(get_tag(rd_text, "title"), collapse = " "),
+       data_rd_usage = paste(get_tag(rd_text, "usage"), collapse = "; "), 
+       data_rd_description = paste(get_tag(rd_text, "description"), collpase = " ")
        )
 })
