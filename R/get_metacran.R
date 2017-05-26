@@ -45,7 +45,7 @@ saveRDS(pkgs_data_rds, saved_gh_data_rd_files)
 
 
 ## Download and parse the Rd files
-rd_file_meta <- lapply(pkgs_data_rds, function(x) {
+rd_file_meta <- lapply(pkgs_data_rds_saved, function(x) {
   if (!length(x$items)) return(NULL)
   x <- x$items[[1]]
   reponame <- x$repository$name
@@ -69,7 +69,11 @@ rd_metadata <- map_df(rd_file_meta, function(x) {
              dataset_name = get_tag(x$rd_text_parsed, "name"), 
              dataset_alias = get_tag(x$rd_text_parsed, "alias"),
              dataset_title = paste(get_tag(x$rd_text_parsed, "title"), collapse = " "), 
-             dataset_description = paste(get_tag(x$rd_text_parsed, "description"), collapse = " ")
+             dataset_description = paste(get_tag(x$rd_text_parsed, "description"), collapse = " "), 
+             dateset_format = paste(get_tag(x$rd_text_parsed, "format"), collapse = " "),
+             dateset_source = paste(get_tag(x$rd_text_parsed, "source"), collapse = " "),
+             dateset_reference = paste(get_tag(x$rd_text_parsed, "references"), collapse = " "),
+             datset_has_examples = ifelse(all(is.na(get_tag(x$rd_text_parsed, "examples"))), FALSE, TRUE)
   )
 })
 
