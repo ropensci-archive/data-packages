@@ -1,6 +1,5 @@
 library(tidyverse)
 library(magrittr)
-theme_set(theme_bw())
 
 cran <- tools:::CRAN_package_db()
 names(cran)[65] <- "MD5sum_rep"
@@ -17,6 +16,6 @@ data_cran <- cran %>%
          Copyright, Description, LazyData, LazyDataCompression, LazyLoad,
          Maintainer, URL, ZipData, Published, `Reverse depends`, `Reverse imports`,
          `Reverse linking to`, `Reverse suggests`, `Reverse enhances`, is_data_package) %>% 
-  mutate(BugReports_is_na = is.na(BugReports),
-         URL_is_na = is.na(URL)) %>% 
+  mutate(BugReports_is_not_na = !is.na(BugReports),
+         URL_is_not_na = !is.na(URL)) %>% 
   saveRDS(., "data/description_metadata.rds")
