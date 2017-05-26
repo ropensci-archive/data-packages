@@ -36,6 +36,10 @@ theme_set(theme_bw())
 data_cran <- read_rds("data/description_metadata.rds") %>% 
   mutate(is_data_package = factor(is_data_package, levels=c("FALSE", "TRUE"), labels=c("Non-data packages", "Data packages")))
 
+ggplot(data_cran, aes(is_data_package)) + 
+  geom_bar() +
+  labs(x=NULL)
+
 ggplot(data_cran, aes(LazyData)) +
   geom_bar() +
   facet_wrap(~is_data_package)  + 
