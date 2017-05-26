@@ -30,7 +30,7 @@ Graphs
 
 ![](README_files/figure-markdown_github/unnamed-chunk-3-1.png)
 
-![](README_files/figure-markdown_github/unnamed-chunk-4-1.png)
+<img src="README_files/figure-markdown_github/unnamed-chunk-4-1.png" style="display: block; margin: auto;" />
 
 Flashboard
 ----------

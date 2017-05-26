@@ -78,7 +78,7 @@ ggplot(df_wide, aes(fct_reorder(License, diff), diff)) +
   theme(axis.text.y = element_text(size=8))
 ```
 
-```{r fig.height=4, fig.width=6, echo=FALSE}
+```{r fig.height=4, fig.width=6, echo=FALSE, fig.align='center'}
 df_ts <- data_cran %>% 
   mutate(year = as.integer(strftime(data_cran$Published, format = "%Y"))) %>% 
   group_by(year, is_data_package) %>% 
