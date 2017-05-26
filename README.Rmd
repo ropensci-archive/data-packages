@@ -80,7 +80,8 @@ ggplot(df_wide, aes(fct_reorder(License, diff), diff)) +
 
 ## Flashboard
 
-<iframe width="420" height="315" src="https://ropenscilabs.github.io/data-packages/" frameborder="0" allowfullscreen></iframe>
+<iframe width="420" height="315" src="https://ropenscilabs.github.io/data-packages/" frameborder="0"></iframe>
+
 
 ## Potential Future Work
 
