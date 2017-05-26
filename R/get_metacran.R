@@ -14,7 +14,15 @@ get_tag <- function(rd, tag) {
 pkgs <- readRDS("data/pkg_data_data.rds")
 pkgs_with_data <- pkgs$pkg_name[pkgs$has_data_dir]
 
-pkgs_data_rds <- lapply(pkgs_with_data[1:100], function(pkg_name) {
+saved_gh_data_rd_files <- "data/data_rd_gh_search_results.rds"
+if (file.exists(saved_gh_data_rd_files)) {
+  pkgs_data_rds_saved <- readRDS("data/data_rd_gh_search_results.rds")
+  start = length(pkgs_data_rds_saved) + 1
+} else {
+  start = 1
+}
+
+pkgs_data_rds <- lapply(pkgs_with_data[start:length(pkgs_with_data)], function(pkg_name) {
   message(pkg_name)
   Sys.sleep(2)
   query <- sprintf( "repo:cran/%s extension:Rd docType{data", pkg_name)
@@ -30,8 +38,13 @@ pkgs_data_rds <- lapply(pkgs_with_data[1:100], function(pkg_name) {
   res
 })
 
-saveRDS(pkgs_data_rds, "data_rd_gh_search_results.rds")
+if (exists("pkgs_data_rds_saved")) {
+  pkgs_data_rds <- c(pkgs_data_rds_saved, pkgs_data_rds)
+}
+saveRDS(pkgs_data_rds, saved_gh_data_rd_files)
 
+
+## Download and parse the Rd files
 rd_file_meta <- lapply(pkgs_data_rds, function(x) {
   if (!length(x$items)) return(NULL)
   x <- x$items[[1]]
@@ -49,6 +62,7 @@ rd_file_meta <- lapply(pkgs_data_rds, function(x) {
   )
 })
 
+## Combine parsed Rd file info into a data frame
 rd_metadata <- map_df(rd_file_meta, function(x) {
   if (is.null(x)) return(NULL)
   data_frame(pkg_name = x$name, 
