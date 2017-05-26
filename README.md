@@ -1,9 +1,25 @@
 # Discovering good data packages
 
-## What is the goal?
+## The state of data on CRAN
 
-* To create a list of which datasets are available in which CRAN packages, and what those datasets can be used for:
-https://github.com/jennybc/cran-data-pkg-licenses#readme
+ * [List CRAN packages with data](R/get-pkgs-with-data-dir.R)
 
-* To provide a guide to good practices for data packages.
+ * [Parsing DESCRIPTION files](R/parse_description.R)
+ 
+ * [Parsing Rd files](R/get_metacran.R)
+ 
+ * *Installing and loading packages*
 
+## What makes a good data package?
+
+https://docs.google.com/document/d/1xhJmt0v4p49jpwINNak9N7AMMb5yohTwwNOXH8WzqqQ/edit?usp=sharing
+
+## Twitter Bot
+
+https://twitter.com/rstatsdata
+
+## Future Work
+
+ * Scoring the quality of data in a package
+ 
+ * Creating badges to advertise data quality

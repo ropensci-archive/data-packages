@@ -2,6 +2,7 @@ library(gh)
 library(dplyr)
 library(purrr)
 library(stringi)
+library(readr)
 
 get_tag <- function(rd, tag) {
   x <- tools:::.Rd_get_metadata(rd, kind = tag)
@@ -10,12 +11,12 @@ get_tag <- function(rd, tag) {
   x
 }
 
-pkgs <- readRDS("pkg_data_data.rds")
+pkgs <- readRDS("data/pkg_data_data.rds")
 pkgs_with_data <- pkgs$pkg_name[pkgs$has_data_dir]
 
-pkgs_data_rds <- lapply(pkgs_with_data[1:20], function(pkg_name) {
+pkgs_data_rds <- lapply(pkgs_with_data[1:100], function(pkg_name) {
   message(pkg_name)
-  Sys.sleep(0.7)
+  Sys.sleep(2)
   query <- sprintf( "repo:cran/%s extension:Rd docType{data", pkg_name)
   res <- tryCatch(gh("GET /search/code", q = query), 
                   error = function(e) {
@@ -26,27 +27,36 @@ pkgs_data_rds <- lapply(pkgs_with_data[1:20], function(pkg_name) {
                     }
                     NULL
                   })
-  res[[3]]
+  res
 })
 
-# res <- gh("GET /search/code", q = "user:cran extension:Rd docType{data")
+saveRDS(pkgs_data_rds, "data_rd_gh_search_results.rds")
 
-
-rd_file_meta <- map_df(pkgs_data_rds, function(x) {
+rd_file_meta <- lapply(pkgs_data_rds, function(x) {
+  if (!length(x$items)) return(NULL)
+  x <- x$items[[1]]
   reponame <- x$repository$name
   repo_url <- paste0("https://github.com/cran/", reponame)
   dataset_rd <- gsub("\\.Rd$", "", x$name)
   dataset_rd_url <- gsub("github\\.com", "raw.githubusercontent.com", x$html_url)
   dataset_rd_url <- gsub("/blob/", "/", dataset_rd_url)
-  rd_text <-  tools::parse_Rd(dataset_rd_url)
-  
-  data_frame(pkg_name = reponame, 
+  rd_text <- readLines(dataset_rd_url)
+  list(name = reponame, 
        repo_url = repo_url, 
        dataset_rd_url = dataset_rd_url, 
-       data_rd_name = get_tag(rd_text, "name"), 
-       data_rd_alias = get_tag(rd_text, "alias"),
-       data_rd_title = get_tag(rd_text, "title"), 
-       data_rd_usage = get_tag(rd_text, "usage"), 
-       data_rd_description = get_tag(rd_text, "description")
-       )
+       rd_text = rd_text,
+       rd_text_parsed = tools::parse_Rd(textConnection(rd_text))
+  )
 })
+
+rd_metadata <- map_df(rd_file_meta, function(x) {
+  if (is.null(x)) return(NULL)
+  data_frame(pkg_name = x$name, 
+             dataset_name = get_tag(x$rd_text_parsed, "name"), 
+             dataset_alias = get_tag(x$rd_text_parsed, "alias"),
+             dataset_title = paste(get_tag(x$rd_text_parsed, "title"), collapse = " "), 
+             dataset_description = paste(get_tag(x$rd_text_parsed, "description"), collapse = " ")
+  )
+})
+
+write_csv(rd_metadata, "data/data_rd_metadata.csv")
