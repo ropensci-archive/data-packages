@@ -1,0 +1,108 @@
+---
+output:
+  md_document:
+    variant: markdown_github
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+# Discovering good data packages
+
+## The state of data on CRAN
+
+ * [List CRAN packages with data](R/get-pkgs-with-data-dir.R)
+
+ * [Parsing DESCRIPTION files](R/parse_description.R)
+ 
+ * [Parsing Rd files](R/get_metacran.R)
+ 
+ * *Installing and loading packages*
+
+## What makes a good data package?
+
+https://docs.google.com/document/d/1xhJmt0v4p49jpwINNak9N7AMMb5yohTwwNOXH8WzqqQ/edit?usp=sharing
+
+## Twitter Bot
+
+https://twitter.com/rstatsdata
+
+## Graphs
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.width=8}
+library(forcats)
+library(tidyverse)
+theme_set(theme_bw())
+
+data_cran <- read_rds("data/description_metadata.rds") %>% 
+  mutate(is_data_package = factor(is_data_package, levels=c("FALSE", "TRUE"), labels=c("Non-data packages", "Data packages")))
+
+ggplot(data_cran, aes(LazyData)) +
+  geom_bar() +
+  facet_wrap(~is_data_package)  + 
+  theme(axis.text.x=element_text(angle = 90, hjust = 1))
+
+ggplot(data_cran, aes(BugReports_is_not_na)) +
+  geom_bar() +
+  facet_wrap(~is_data_package) +
+  labs(x = "Is there an BugReports in the package description?")
+
+ggplot(data_cran, aes(URL_is_not_na)) +
+  geom_bar() +
+  facet_wrap(~is_data_package) +
+  labs(x = "Is there an URL in the package description?")
+```
+
+```{r, echo=FALSE, fig.height=8}
+# ggplot(data_cran, aes(License)) +
+#   geom_bar() +
+#   coord_flip() +
+#   facet_wrap(~is_data_package)
+```
+
+```{r, echo=FALSE, fig.height=14}
+df <- data_cran %>% 
+  select(is_data_package, License) %>% 
+  group_by(is_data_package, License) %>% 
+  summarise(n=n())
+
+df_wide <- df %>% 
+  spread(is_data_package, n) %>% 
+  mutate(`Non-data packages` = ifelse(is.na(`Non-data packages`), 0, `Non-data packages`),
+         `Data packages` = ifelse(is.na(`Data packages`), 0, `Data packages`)) %>% 
+  mutate(diff=`Data packages`-`Non-data packages`)
+
+ggplot(df_wide, aes(fct_reorder(License, diff), diff)) +
+  geom_col() + 
+  coord_flip() +
+  labs(x="License", y="<--- Non-data packages --------- Data packages --->") +
+  theme(axis.text.y = element_text(size=8))
+```
+
+```{r fig.height=8}
+df_ts <- data_cran %>% 
+  mutate(year = as.integer(strftime(data_cran$Published, format = "%Y"))) %>% 
+  group_by(year, is_data_package) %>% 
+  summarise(number = n())
+
+ggplot(df_ts, aes(y = number, 
+                      x = year, 
+                      colour = is_data_package)) +
+  geom_point() + 
+  scale_y_log10()
+```
+
+## Flashboard
+
+https://ropenscilabs.github.io/data-packages
+
+## Potential Future Work
+
+ * Scoring the quality of data in a package
+ 
+ * Creating badges to advertise data quality
+
+ * Use Github URLs to pull geo-location of package maintainers
+ 
+ * Crawl Biocondunctor
+ 
+ * Examine `inst/extdata` folders
