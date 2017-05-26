@@ -18,8 +18,14 @@ https://docs.google.com/document/d/1xhJmt0v4p49jpwINNak9N7AMMb5yohTwwNOXH8WzqqQ/
 
 https://twitter.com/rstatsdata
 
-## Future Work
+## Potential Future Work
 
  * Scoring the quality of data in a package
  
  * Creating badges to advertise data quality
+
+ * Use Github URLs to pull geo-location of package maintainers
+ 
+ * Crawl Biocondunctor
+ 
+ * Examine `inst/extdata` folders
