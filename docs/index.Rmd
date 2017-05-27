@@ -11,10 +11,10 @@ output:
 # load data in 'global' chunk so it can be shared by all users of the dashboard
 library(flexdashboard)
 library(DT)
-df <- readRDS("../data/pkgs_datasets_info2.rds")
+df <- readRDS("../data/pkgs_datasets_final.rds")
 
-dfP <- data.frame(table(df$Package))
-names(dfP) <- c("Package", "NumberOfDatasets")
+# dfP <- data.frame(table(df$Package))
+# names(dfP) <- c("Package", "NumberOfDatasets")
 ```
 
 Row
