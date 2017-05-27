@@ -69,6 +69,8 @@ https://docs.google.com/document/d/1xhJmt0v4p49jpwINNak9N7AMMb5yohTwwNOXH8WzqqQ/
 
 https://twitter.com/rstatsdata
 
+![](inst/screenshots/tweetbot.png)
+
 ## Graphs
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.width=8}

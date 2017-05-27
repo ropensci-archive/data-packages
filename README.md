@@ -68,6 +68,8 @@ Twitter Bot
 
 <https://twitter.com/rstatsdata>
 
+![](inst/screenshots/tweetbot.png)
+
 Graphs
 ------
 
