@@ -87,12 +87,20 @@ Flashboard
 Potential Future Work
 ---------------------
 
--   Scoring the quality of data in a package
-
--   Creating badges to advertise data quality
-
--   Use Github URLs to pull geo-location of package maintainers
+### Additional Data Sources
 
 -   Crawl Biocondunctor
 
 -   Examine `inst/extdata` folders
+
+### Additional Package Stats
+
+-   Use Github URLs to pull geo-location of package maintainers
+
+### Quality Assessment
+
+-   Scoring the quality of data in a package
+
+-   Creating badges to advertise data quality
+
+-   Contact package authors with data quality deficiencies
