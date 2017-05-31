@@ -39,7 +39,7 @@ Make sure your documentation answers as many of these questions as possible.
 
 1.  A patch for `usethis::use_readme_rmd()` to display datasets in package README files.
 
-2.  A flexdashboard with a searchable table that shows metadata on datasets from many CRAN packages. It has information for over 4000 datasets.
+2.  A [flexdashboard](https://ropenscilabs.github.io/data-packages) with a searchable table that shows metadata on datasets from many CRAN packages. It has information for over 4000 datasets.
 
 ![](inst/screenshots/pkg.png)
 
