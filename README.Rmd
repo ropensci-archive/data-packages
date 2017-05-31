@@ -142,10 +142,6 @@ ggplot(df_ts, aes(year, number, color = is_data_package)) +
   scale_color_manual(name=NULL, values = wes_palette("Royal1"))
 ```
 
-## Flashboard
-
-https://ropenscilabs.github.io/data-packages
-
 ## Potential Future Work
 
 ### Additional Data Sources 
