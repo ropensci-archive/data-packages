@@ -1,3 +1,19 @@
+# Code to tweet rstats datasets
+# To setup on AWS Lambda:
+#
+# ```
+# mkdir rstatsdata
+# pip install pandas -t ~/rstatsdata
+# pip install python-twitter -t ~/rstatsdata
+# # zip all files 
+# # open lambda console
+# # create new function
+# # # blank function
+# # # configure trigger - cloudwatch events
+# # # runtime - python3.6
+# # # code entry -> upload zip
+# # # handler -> rstatsdata.rdatatoots
+
 import twitter
 import pandas as pd
 
