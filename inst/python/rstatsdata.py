@@ -5,6 +5,7 @@
 # mkdir rstatsdata
 # pip install pandas -t ~/rstatsdata
 # pip install python-twitter -t ~/rstatsdata
+# # move data-packages csv to rstatsdata folder
 # # zip all files 
 # # open lambda console
 # # create new function
@@ -13,6 +14,7 @@
 # # # runtime - python3.6
 # # # code entry -> upload zip
 # # # handler -> rstatsdata.rdatatoots
+# ```
 
 import twitter
 import pandas as pd
