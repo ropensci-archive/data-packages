@@ -2,6 +2,8 @@
 Discovering good data packages
 ==============================
 
+[![DOI: 10.5281/zenodo.47223](https://zenodo.org/badge/doi/10.5281/zenodo.1095831.svg)](https://doi.org/10.5281/zenodo.1095831)
+
 ### Project participants:
 
 -   Andy Teucher [@ateucher](https://github.com/ateucher)
