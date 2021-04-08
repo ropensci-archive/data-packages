@@ -1,7 +1,7 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 Discovering good data packages
 ==============================
-
+[![Project Status: Abandoned – Initial development has started, but there has not yet been a stable, usable release; the project has been abandoned and the author(s) do not intend on continuing development.](https://www.repostatus.org/badges/latest/abandoned.svg)](https://www.repostatus.org/#abandoned)
 [![DOI: 10.5281/zenodo.47223](https://zenodo.org/badge/doi/10.5281/zenodo.1095831.svg)](https://doi.org/10.5281/zenodo.1095831)
 
 ### Project participants:
